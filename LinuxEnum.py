@@ -91,7 +91,28 @@ def search_vuln():
     uname_a = os.system("uname -a")
     print("")
     
+    print("[*] Looking for Docker Container")
+    search_docker = os.system("ls -la / | tee docker.txt")
+    docker = open("docker.txt", "r")
+    docker_read = docker.read()
+    if "docker" in docker_read:
+      print("[!] You seem to be in a Docker Container\n")
+    else:
+      print("[*] You don't seem to be in a Docker Container\n")
     
+    print("[*] Looking for SSH Keys")
+    search_ssh = os.system("find / -iname id_rsa 2>/dev/null | tee ssh.txt")
+    ssh = open("ssh.txt", "r")
+    ssh_read = ssh.read()
+    if "id_rsa" in ssh_read:
+      print("[!] Found a id_rsa file\n")
+    else:
+      print("[!] Didn't found a id_rsa file\n")
+    
+    print("[*] Removing all txt files created")  
+    rm_txt = os.system("rm *.txt*")
+    print("[!] All files removed successfully")
+
 
 if __name__ == "__main__":
   search_vuln()
